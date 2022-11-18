@@ -1,5 +1,5 @@
 import dbConnect from '../../lib/dbConnect'
-import TrainTripPerDay from '../../models/TrainTripPerDay'
+import TrainTripDetail from '../../models/TrainTripDetail'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (method) {
     case 'GET':
       try {
-        const users = await TrainTripPerDay.find({})
+        const users = await TrainTripDetail.find({})
         res.status(200).json({ success: true, data: users })
       } catch (error) {
         res.status(400).json({ success: false })
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       break
     case 'POST':
       try {
-        const user = await TrainTripPerDay.create(req.body)
+        const user = await TrainTripDetail.create(req.body)
         res.status(201).json({ success: true, data: user })
       } catch (error) {
         res.status(400).json({ success: false })

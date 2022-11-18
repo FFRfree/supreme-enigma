@@ -1,11 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import dbConnect from '../../lib/dbConnect'
-import TrainTripPerDay, { ITrainTripPerDay } from '../../models/TrainTripPerDay'
+import TrainTripDetail, { ITrainTripDetail   } from '../../models/TrainTripDetail'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import TrainTrip, { ITrainTrip } from '../../models/TrainTrip'
+import TrainTrip, { ITrainTripMeta } from '../../models/TrainTripMeta'
 
-export interface Idata extends ITrainTrip {
-  perDay: Array<ITrainTripPerDay>
+export interface Idata extends ITrainTripMeta {
+  perDay: Array<ITrainTripDetail  >
 }
 
 export interface ITrainTripDetailRes {

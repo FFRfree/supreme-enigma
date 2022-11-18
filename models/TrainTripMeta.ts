@@ -1,6 +1,6 @@
 import mongoose, { Model } from 'mongoose'
 
-export interface ITrainTrip {
+export interface ITrainTripMeta {
   name: string
   OrderDate: Date
   OrderId: string
@@ -10,7 +10,7 @@ export interface ITrainTrip {
   ArriveTime: Date
 }
 
-const TrainTripSchema = new mongoose.Schema<ITrainTrip>(
+const TrainTripMetaSchema = new mongoose.Schema<ITrainTripMeta>(
   {
     name: String,
     OrderDate: Date,
@@ -20,10 +20,10 @@ const TrainTripSchema = new mongoose.Schema<ITrainTrip>(
     DepartureTime: Date,
     ArriveTime: Date
   },
-  { collection: 'train_trip' }
+  { collection: 'TrainTripMeta' }
 )
 
-const TrainTrip: Model<ITrainTrip> =
-  mongoose.models.TrainTrip || mongoose.model('TrainTrip', TrainTripSchema)
+const TrainTripMeta: Model<ITrainTripMeta> =
+  mongoose.models.TrainTripMeta || mongoose.model('TrainTripMeta', TrainTripMetaSchema)
 
-export default TrainTrip
+export default TrainTripMeta

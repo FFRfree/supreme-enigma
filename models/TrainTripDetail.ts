@@ -1,6 +1,6 @@
 import mongoose, { Model } from 'mongoose'
 
-export interface ITrainTripPerDay {
+export interface ITrainTripDetail {
   timestamp: Date
   metaData: { trainTripId: Number }
   data: { isAvailable: Boolean }
@@ -8,7 +8,7 @@ export interface ITrainTripPerDay {
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const TrainTripPerDaySchema = new mongoose.Schema<ITrainTripPerDay>(
+const TrainTripDetailSchema = new mongoose.Schema<ITrainTripDetail>(
   {
     timestamp: Date,
     metaData: { trainTripId: ObjectId },
@@ -20,12 +20,12 @@ const TrainTripPerDaySchema = new mongoose.Schema<ITrainTripPerDay>(
       metaField: 'metaData',
       granularity: 'hours'
     },
-    collection: 'train_trip_availability_per_day'
+    collection: 'TrainTripDetail'
   }
 )
 
-const TrainTripPerDay: Model<ITrainTripPerDay> =
-  mongoose.models.TrainTripPerDay ||
-  mongoose.model<ITrainTripPerDay>('TrainTripPerDay', TrainTripPerDaySchema)
+const TrainTripDetail: Model<ITrainTripDetail> =
+  mongoose.models.TrainTripDetail ||
+  mongoose.model<ITrainTripDetail>('TrainTripDetail', TrainTripDetailSchema)
 
-export default TrainTripPerDay
+export default TrainTripDetail
