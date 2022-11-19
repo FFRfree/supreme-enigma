@@ -64,7 +64,7 @@ const AdminPage = ({}: {}) => {
         filterMode: 'tree',
         filters: nameFilters,
         filterSearch: true,
-        onFilter: (value, record) => record.name.startsWith(value as string)
+        onFilter: (value, record) => record.name === value
       },
       {
         title: g['OrderDate'],
