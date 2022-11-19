@@ -24,5 +24,6 @@ a {
     background: black;
   }
 }
+@import '~nprogress/nprogress.css';
 
-@import '~antd/dist/antd.css';
+@import '~antd/dist/antd.dark.css';

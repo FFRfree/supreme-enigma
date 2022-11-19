@@ -1,4 +1,4 @@
-import { Button, DatePicker, Modal, Space } from 'antd'
+import { Button, DatePicker, Modal, Space, Typography } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import moment, { Moment } from 'moment'
 import { useMemo, useRef, useState } from 'react'
@@ -23,10 +23,6 @@ export const getTrainTrip = async ({ queryKey }: Params) => {
   )
   return data
 }
-
-export const Title = styled.div`
-  font-size: 20px;
-`
 
 const AdminPage = ({}: {}) => {
   const [range, setRange] = useState<[Moment, Moment]>([moment('2022-11-1'), moment('2022-11-9')])
@@ -115,7 +111,7 @@ const AdminPage = ({}: {}) => {
   return (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Title>Admin page</Title>
+        <Typography.Title>动车组列车开行情况</Typography.Title>
         <RangePicker
           value={range}
           onChange={(dates, dayStrings) => {

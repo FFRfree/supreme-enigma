@@ -5,53 +5,48 @@ import TrainTripMeta from '../../models/TrainTripMeta'
 import mongoose from 'mongoose'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  const { method } = req
+  try {
+    const { method } = req
+    console.log(req.body)
 
-  await dbConnect()
+    await dbConnect()
 
-  switch (method) {
-    case 'GET':
-      try {
+    switch (method) {
+      case 'GET': {
         const ans = await TrainTripDetail.find({})
         res.status(200).json({ success: true, data: ans })
-      } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, err: error })
+
+        break
       }
-      break
-    case 'POST':
-      try {
-        const { document } = JSON.parse(req.body)
-        const ans = await (await TrainTripMeta.create(document)).save()
+      case 'POST': {
+        const document = req.body
+        const newRecord = new TrainTripMeta(document)
+        const ans = await newRecord.save()
         res.status(201).json({ success: true, data: ans })
-      } catch (error) {
-        res.status(400).json({ success: false })
+        break
       }
-      break
-    case 'PUT':
-      try {
-        const { _id, updates } = JSON.parse(req.body)
+      case 'PUT': {
+        const { _id, updates } = req.body
         console.log('_id = ' + _id + '; updates = ' + JSON.stringify(updates))
         const ans = await TrainTripMeta.findByIdAndUpdate(_id, updates)
         if (!ans) return res.status(404).json({ success: false, msg: 'not found' })
         res.status(200).json({ success: true, data: ans })
-      } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, err: error })
+        break
       }
-      break
-    case 'DELETE':
-      try {
-        const { _id } = JSON.parse(req.body)
+      case 'DELETE': {
+        const { _id } = req.body
         const ans = await TrainTripMeta.findByIdAndDelete(_id)
-        res.status(201).json({ success: true, data: ans })
-      } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, err: error })
+        const timeseries = await TrainTripDetail.deleteMany({ 'metaData.trainTripId': _id })
+        res.status(201).json({ success: true, data: ans, timeseries })
+        break
       }
-      break
-    default:
-      res.status(400).json({ success: false })
-      break
+      default: {
+        res.status(400).json({ success: false })
+        break
+      }
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ success: false, err: error })
   }
 }

@@ -6,7 +6,9 @@ import {
   UserOutlined,
   VideoCameraOutlined
 } from '@ant-design/icons'
-import { Layout, Menu } from 'antd'
+import { Breadcrumb, Layout, Menu } from 'antd'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const { Header, Sider, Content } = Layout
 
@@ -15,42 +17,49 @@ interface IMylayout {
 }
 
 const MyLayout: React.FC<IMylayout> = ({ children }: IMylayout) => {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
+  const router = useRouter()
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="logo" />
         <Menu
-          theme="light"
+          theme="dark"
+          selectedKeys={[router.asPath]}
           mode="inline"
-          defaultSelectedKeys={['1']}
           items={[
             {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1'
+              key: '/',
+              icon: (
+                <Link href="/">
+                  <UserOutlined />
+                </Link>
+              ),
+              label: 'main'
             },
             {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2'
+              key: '/admin',
+              icon: (
+                <Link href="/admin">
+                  <VideoCameraOutlined />
+                </Link>
+              ),
+              label: 'schedule'
             },
             {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3'
+              key: '/testPage',
+              icon: (
+                <Link href="/testPage">
+                  <UploadOutlined />
+                </Link>
+              ),
+              label: 'test'
             }
           ]}
         />
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed)
-          })}
-        </Header>
         <Content
           className="site-layout-background"
           style={{

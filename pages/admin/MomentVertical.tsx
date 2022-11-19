@@ -16,14 +16,15 @@ export default function MomentVertical({ mm }: { mm: Moment }) {
     <div
       style={{
         fontSize: 12,
-        width: 30,
+        width: 36,
         textAlign: 'center'
       }}
     >
       {/* <div>{year}</div> */}
-      <div>{month}</div>
+      {/* <div>{month}</div>
       <VerticalBar></VerticalBar>
-      <div>{day}</div>
+      <div>{day}</div> */}
+      {`${month}-${day}`}
     </div>
   )
 }

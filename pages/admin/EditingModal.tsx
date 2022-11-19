@@ -26,6 +26,9 @@ const adapter = (record: ITrainTrip) => {
 const updateTrainTripMeta = async (id: string, updates: ITrainTripMeta) => {
   return await fetch('/api/trainTripMeta', {
     method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       _id: id,
       updates

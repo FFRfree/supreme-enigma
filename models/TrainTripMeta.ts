@@ -12,13 +12,13 @@ export interface ITrainTripMeta {
 
 const TrainTripMetaSchema = new mongoose.Schema<ITrainTripMeta>(
   {
-    name: String,
-    OrderDate: Date,
-    OrderId: String,
-    DepartureStation: String,
-    ArriveStation: String,
-    DepartureTime: Date,
-    ArriveTime: Date
+    name: { type: String, required: true },
+    OrderDate: { type: Date, required: true },
+    OrderId: { type: String, required: true },
+    DepartureStation: { type: String, required: true },
+    ArriveStation: { type: String, required: true },
+    DepartureTime: { type: Date, required: true },
+    ArriveTime: { type: Date, required: true }
   },
   { collection: 'TrainTripMeta' }
 )
