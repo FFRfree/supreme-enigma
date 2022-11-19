@@ -1,6 +1,7 @@
 import mongoose, { Model } from 'mongoose'
 
 export interface ITrainTripMeta {
+  _id: string
   name: string
   OrderDate: Date
   OrderId: string
@@ -12,6 +13,7 @@ export interface ITrainTripMeta {
 
 const TrainTripMetaSchema = new mongoose.Schema<ITrainTripMeta>(
   {
+    _id: String,
     name: String,
     OrderDate: Date,
     OrderId: String,

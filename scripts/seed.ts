@@ -9,7 +9,7 @@ const mockArray = Array.from(Array(100).keys())
 
 const mockDate = Array.from(Array(10), (_, i) => i + 1).map((v) => new Date(2022, 10, v))
 
-const mockData: Array<ITrainTripMeta> = mockArray.map((num) => {
+const mockData: Array<any> = mockArray.map((num) => {
   return {
     name: `交路${num}`,
     OrderDate: new Date(2022, 5, num),
