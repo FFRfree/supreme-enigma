@@ -7,9 +7,7 @@ import MomentVertical from './MomentVertical'
 
 const _AvailbilityTitle = ({ datesRange }: { datesRange: [Moment, Moment] }) => {
   const [start, end] = datesRange
-  console.log(datesRange)
   const totalNum = end.diff(start, 'days') + 1
-  console.log(totalNum)
   const li = Array.from(Array(totalNum), (_, i) => (
     <MomentVertical key={i} mm={start.clone().add(i, 'day')}></MomentVertical>
   ))
@@ -24,7 +22,11 @@ export const AvailabilityRow = ({ datesList }: { datesList: ITrainTripDetail[] }
       {datesList.map((v) => {
         const config = enumMap[v.data.isAvailable ? 1 : 0]
         return (
-          <Tag key={v.timestamp as any} style={{ width: 30, marginRight: 0 }} color={config.color}>
+          <Tag
+            key={v.timestamp as any}
+            style={{ width: 30, marginRight: 0, textAlign: 'center' }}
+            color={config.color}
+          >
             {config.name}
           </Tag>
         )

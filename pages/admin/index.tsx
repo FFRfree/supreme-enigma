@@ -1,12 +1,14 @@
 import { Button, DatePicker, Modal, Space } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import moment, { Moment } from 'moment'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { ITrainTrip, ITrainTripRes } from '../api/trainTrip'
 import styled from 'styled-components'
 import { AvailabilityRow, AvailbilityTitle } from './AvailibilityRenderer'
 import { EditOutlined } from '@ant-design/icons'
+import EditingModal, { IEditingModalRef } from './EditingModal'
+import { g } from '../../utils/dataMap'
 
 const { RangePicker } = DatePicker
 
@@ -31,6 +33,8 @@ const AdminPage = ({}: {}) => {
   const isoRange = useMemo(() => range.map((m) => m.toISOString()), [range])
   // FIXME: 为什么文档写着dayjs，类型提示moment
 
+  const editModalRef = useRef<IEditingModalRef | null>(null)
+
   const queryClient = useQueryClient()
   // FIXME：这个unknown什么鬼
   const query = useQuery<unknown, unknown, ITrainTripRes, Params['queryKey']>(
@@ -38,6 +42,10 @@ const AdminPage = ({}: {}) => {
     getTrainTrip
   )
   const data = useMemo(() => query.data?.data, [query])
+  const nameFilters = useMemo(
+    () => query.data?.data?.map((record) => ({ text: record.name, value: record.name })),
+    [query]
+  )
 
   const columns: ColumnsType<ITrainTrip> = useMemo(() => {
     return [
@@ -46,16 +54,20 @@ const AdminPage = ({}: {}) => {
         key: 'edit',
         width: 46,
         render(value, record, index) {
-          return <EditOutlined onClick={() => console.log(record)} />
+          return <EditOutlined onClick={() => editModalRef.current?.open(record)} />
         }
       },
       {
-        title: '交路',
+        title: g['name'],
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        filterMode: 'tree',
+        filters: nameFilters,
+        filterSearch: true,
+        onFilter: (value, record) => record.name.startsWith(value as string)
       },
       {
-        title: '受令日期',
+        title: g['OrderDate'],
         dataIndex: 'OrderDate',
         key: 'OrderDate',
         render(value, record, index) {
@@ -63,7 +75,7 @@ const AdminPage = ({}: {}) => {
         }
       },
       {
-        title: '调令ID',
+        title: g['OrderId'],
         dataIndex: 'OrderId',
         key: 'OrderId'
       },
@@ -75,7 +87,7 @@ const AdminPage = ({}: {}) => {
         }
       },
       {
-        title: '开点',
+        title: g['DepartureTime'],
         dataIndex: 'DepartureTime',
         key: 'DepartureTime',
         render(value, record, index) {
@@ -83,7 +95,7 @@ const AdminPage = ({}: {}) => {
         }
       },
       {
-        title: '到点',
+        title: g['ArriveTime'],
         dataIndex: 'ArriveTime',
         key: 'ArriveTime',
         render(value, record, index) {
@@ -98,7 +110,7 @@ const AdminPage = ({}: {}) => {
         }
       }
     ]
-  }, [range])
+  }, [nameFilters, range])
 
   return (
     <>
@@ -116,15 +128,7 @@ const AdminPage = ({}: {}) => {
         />
         <Table dataSource={data} columns={columns} rowKey={'_id'} loading={query.isLoading} />
       </Space>
-      <Modal
-        title="Title"
-        // open={open}
-        // onOk={handleOk}
-        // confirmLoading={confirmLoading}
-        // onCancel={handleCancel}
-      >
-        <p>{1}</p>
-      </Modal>
+      <EditingModal ref={editModalRef}></EditingModal>
     </>
   )
 }

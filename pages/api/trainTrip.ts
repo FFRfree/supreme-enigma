@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import TrainTrip, { ITrainTripMeta } from '../../models/TrainTripMeta'
 
 export interface ITrainTrip extends ITrainTripMeta {
+  _id: string
   perDay: Array<ITrainTripDetail>
 }
 

@@ -5,7 +5,7 @@ export default function MomentVertical({ mm }: { mm: Moment }) {
   const month = mm.month()
   const day = mm.date()
   return (
-    <div style={{ fontSize: 10, width: 30, textAlign: 'center' }}>
+    <div style={{ fontSize: 12, width: 30, textAlign: 'center' }}>
       {/* <div>{year}</div> */}
       <div>
         {month}-{day}
