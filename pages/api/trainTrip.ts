@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             $lookup: {
               from: 'TrainTripDetail',
               localField: '_id',
-              foreignField: 'metaData.trainTripId',
+              foreignField: 'trainTripId',
               as: 'perDay',
               pipeline: [
                 {

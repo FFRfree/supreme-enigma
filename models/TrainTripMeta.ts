@@ -1,13 +1,14 @@
+import { Moment } from 'moment'
 import mongoose, { Model } from 'mongoose'
 
 export interface ITrainTripMeta {
   name: string
-  OrderDate: Date
+  OrderDate: Moment
   OrderId: string
   DepartureStation: string
   ArriveStation: string
-  DepartureTime: Date
-  ArriveTime: Date
+  DepartureTime: Moment
+  ArriveTime: Moment
 }
 
 const TrainTripMetaSchema = new mongoose.Schema<ITrainTripMeta>(

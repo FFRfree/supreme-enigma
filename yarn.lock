@@ -2651,6 +2651,11 @@ mongodb@4.11.0:
     "@aws-sdk/credential-providers" "^3.186.0"
     saslprep "^1.0.3"
 
+mongoose-int32@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npmmirror.com/mongoose-int32/-/mongoose-int32-0.6.0.tgz#89e7d444d7841534605ae8d052bdc4355bc03dcd"
+  integrity sha512-2mDfOCiF+ikGOOg7Xh+GYauc99tAkFCRg64eafVYv16IvXbsSGFFZmFutT3CWH2byZ6zVa82ewCO0Hfb9URjQQ==
+
 mongoose@^6.7.2:
   version "6.7.2"
   resolved "https://registry.npmmirror.com/mongoose/-/mongoose-6.7.2.tgz#457994b254a2afd1e03dd8f0b3046ff3d2ed276e"

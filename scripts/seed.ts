@@ -27,7 +27,7 @@ async function main() {
   const conn = await dbConnect()
   console.log('db connected')
 
-  await TrainTripMeta.remove({})
+  await TrainTripMeta.collection.drop()
   console.log(`TrainTripMeta clear`)
 
   const jobs1 = mockData.map((data) => {
@@ -38,7 +38,8 @@ async function main() {
 
   /**************/
 
-  await TrainTripDetail.remove({})
+  // FIXME：这里复用手动设置的collection
+  await TrainTripDetail.collection.drop()
   console.log('TrainTripDetail clear')
 
   const trainTrips = await TrainTripMeta.find({})
@@ -47,8 +48,9 @@ async function main() {
     mockDate.forEach((day) => {
       const j = TrainTripDetail.create({
         timestamp: day,
-        metaData: { trainTripId: trainTrip._id },
-        data: { isAvailable: Math.random() > 0.2 ? true : false }
+        trainTripId: trainTrip._id,
+        status: Math.round(Math.random() * 2),
+        extra: '备注信息'
       })
       job2.push(j)
     })

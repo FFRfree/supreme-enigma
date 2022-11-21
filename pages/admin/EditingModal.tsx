@@ -8,7 +8,7 @@ import { ITrainTripMeta } from '../../models/TrainTripMeta'
 import { g } from '../../utils/dataMap'
 import { ITrainTrip } from '../api/trainTrip'
 
-const adapter = (record: ITrainTrip) => {
+const adapter = (record: ITrainTrip): Partial<ITrainTrip> => {
   /**为保证date不是字符串而是Date */
   const { name, OrderDate, OrderId, DepartureStation, ArriveStation, DepartureTime, ArriveTime } =
     record
@@ -153,7 +153,6 @@ const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, r
     </Modal>
   )
 })
-
 export interface IEditingModalRef {
   open: (record: ITrainTrip) => void
 }

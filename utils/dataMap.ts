@@ -3,11 +3,15 @@ import { ITrainTrip } from '../pages/api/trainTrip'
 export const enumMap = {
   0: {
     color: 'error',
-    name: '关'
+    name: '停'
   },
   1: {
     color: 'success',
     name: '开'
+  },
+  2: {
+    color: 'warning',
+    name: '休'
   }
 }
 

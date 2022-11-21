@@ -1,25 +1,23 @@
-import mongoose, { Model } from 'mongoose'
+import { Moment } from 'moment'
+import mongoose, { Model, mongo, ObjectId } from 'mongoose'
 
 export interface ITrainTripDetail {
-  timestamp: Date
-  metaData: { trainTripId: Number }
-  data: { isAvailable: Boolean }
+  timestamp: Moment
+  trainTripId: ObjectId
+  status: number
+  extra?: string
 }
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const TrainTripDetailSchema = new mongoose.Schema<ITrainTripDetail>(
   {
-    timestamp: Date,
-    metaData: { trainTripId: ObjectId },
-    data: { isAvailable: Boolean }
+    timestamp: { type: Date, required: true, index: true },
+    trainTripId: { type: ObjectId, required: true, index: true },
+    status: { type: Number, required: true },
+    extra: { type: String, required: true }
   },
   {
-    timeseries: {
-      timeField: 'timestamp',
-      metaField: 'metaData',
-      granularity: 'hours'
-    },
     collection: 'TrainTripDetail'
   }
 )

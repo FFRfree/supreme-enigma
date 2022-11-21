@@ -4,13 +4,12 @@ import moment, { Moment } from 'moment'
 import { useMemo, useRef, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { ITrainTrip, ITrainTripRes } from '../api/trainTrip'
-import styled from 'styled-components'
-import { AvailabilityRow, AvailbilityTitle } from './AvailibilityRenderer'
 import { EditOutlined } from '@ant-design/icons'
 import EditingModal, { IEditingModalRef } from './EditingModal'
 import { g } from '../../utils/dataMap'
 import Status from './Status'
-import { ITrainTripDetail } from '../../models/TrainTripDetail'
+import DetailEditModal, { IDetailEditModalRef } from './DetailEditModal'
+import { ITrainTripDetailRes } from '../api/trainTripDetail'
 
 const { RangePicker } = DatePicker
 
@@ -18,7 +17,7 @@ type Params = {
   queryKey: [string, string[]]
 }
 
-type perDayDataType = Record<string, ITrainTripDetail>
+type perDayDataType = Record<string, ITrainTripDetailRes>
 
 export const getTrainTrip = async ({ queryKey }: Params) => {
   const [_key, [start, end]] = queryKey
@@ -34,6 +33,7 @@ const AdminPage = ({}: {}) => {
   // FIXME: 为什么文档写着dayjs，类型提示moment
 
   const editModalRef = useRef<IEditingModalRef | null>(null)
+  const detailEditModalRef = useRef<IDetailEditModalRef | null>(null)
 
   const queryClient = useQueryClient()
   // TODO：这个unknown什么鬼
@@ -72,8 +72,15 @@ const AdminPage = ({}: {}) => {
         title: shortenStr,
         key: dateStr,
         dataIndex: dateStr,
-        render(value: ITrainTripDetail | null, record, index) {
-          return <Status ttDetail={value} />
+        render(value: ITrainTripDetailRes | null, record, index) {
+          return (
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => detailEditModalRef.current?.open((record as any)._id, date, value)}
+            >
+              <Status ttDetail={value} />
+            </div>
+          )
         }
       }
     })
@@ -159,6 +166,7 @@ const AdminPage = ({}: {}) => {
         />
       </Space>
       <EditingModal ref={editModalRef}></EditingModal>
+      <DetailEditModal ref={detailEditModalRef}></DetailEditModal>
     </>
   )
 }

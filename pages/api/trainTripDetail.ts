@@ -1,8 +1,10 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../lib/dbConnect'
-import TrainTripDetail from '../../models/TrainTripDetail'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import TrainTripMeta from '../../models/TrainTripMeta'
-import mongoose from 'mongoose'
+import TrainTripDetail, { ITrainTripDetail } from '../../models/TrainTripDetail'
+
+export interface ITrainTripDetailRes extends ITrainTripDetail {
+  _id: string
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
@@ -12,29 +14,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     switch (method) {
       case 'GET': {
-        const ans = await TrainTripMeta.find({})
+        const ans = await TrainTripDetail.find({})
         res.status(200).json({ success: true, data: ans })
-
         break
       }
-      case 'POST': {
-        const document = req.body
-        const newRecord = new TrainTripMeta(document)
-        const ans = await newRecord.save()
-        res.status(201).json({ success: true, data: ans })
-        break
-      }
+      // case 'POST': {
+      //   const document = req.body
+      //   const newRecord = new TrainTripDetail(document)
+      //   const ans = await newRecord.save()
+      //   res.status(200).json({ success: true, data: ans })
+      //   break
+      // }
       case 'PUT': {
-        const { _id, updates } = req.body
-        console.log('_id = ' + _id + '; updates = ' + JSON.stringify(updates))
-        const ans = await TrainTripMeta.findByIdAndUpdate(_id, updates)
-        if (!ans) return res.status(404).json({ success: false, msg: 'not found' })
+        /** 更新，如果找不到，则创建 */
+        const { query, updates } = req.body
+        const ans = await TrainTripDetail.updateOne(query, updates, { upsert: true })
         res.status(200).json({ success: true, data: ans })
         break
       }
       case 'DELETE': {
         const { _id } = req.body
-        const ans = await TrainTripMeta.findByIdAndDelete(_id)
+        const ans = await TrainTripDetail.findByIdAndDelete(_id)
         const timeseries = await TrainTripDetail.deleteMany({ 'metaData.trainTripId': _id })
         res.status(201).json({ success: true, data: ans, timeseries })
         break
