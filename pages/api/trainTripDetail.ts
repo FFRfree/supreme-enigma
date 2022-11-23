@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../lib/dbConnect'
 import TrainTripDetail, { ITrainTripDetail } from '../../models/TrainTripDetail'
@@ -27,16 +28,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       // }
       case 'PUT': {
         /** 更新，如果找不到，则创建 */
-        const { query, updates } = req.body
-        const ans = await TrainTripDetail.updateOne(query, updates, { upsert: true })
+        const { timestamp, trainTripId, status, extra } = req.body
+        console.log(req.body)
+        const ans = await TrainTripDetail.updateOne(
+          { timestamp, trainTripId: new mongoose.Types.ObjectId(trainTripId) },
+          { status, extra },
+          { upsert: true }
+        )
+        console.log(ans)
         res.status(200).json({ success: true, data: ans })
         break
       }
       case 'DELETE': {
+        /** 删除某一天的开车信息 */
         const { _id } = req.body
         const ans = await TrainTripDetail.findByIdAndDelete(_id)
-        const timeseries = await TrainTripDetail.deleteMany({ 'metaData.trainTripId': _id })
-        res.status(201).json({ success: true, data: ans, timeseries })
+        res.status(201).json({ success: true, data: ans })
         break
       }
       default: {

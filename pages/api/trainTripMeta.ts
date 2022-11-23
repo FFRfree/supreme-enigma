@@ -32,13 +32,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         res.status(200).json({ success: true, data: ans })
         break
       }
-      case 'DELETE': {
-        const { _id } = req.body
-        const ans = await TrainTripMeta.findByIdAndDelete(_id)
-        const timeseries = await TrainTripDetail.deleteMany({ 'metaData.trainTripId': _id })
-        res.status(201).json({ success: true, data: ans, timeseries })
-        break
-      }
+      // case 'DELETE': {
+      //   const { _id } = req.body
+      //   const ans = await TrainTripMeta.findByIdAndDelete(_id)
+      //   const timeseries = await TrainTripDetail.deleteMany({ 'metaData.trainTripId': _id })
+      //   res.status(201).json({ success: true, data: ans, timeseries })
+      //   break
+      // }
       default: {
         res.status(400).json({ success: false })
         break

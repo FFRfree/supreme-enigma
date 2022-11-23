@@ -15,7 +15,7 @@ const TrainTripDetailSchema = new mongoose.Schema<ITrainTripDetail>(
     timestamp: { type: Date, required: true, index: true },
     trainTripId: { type: ObjectId, required: true, index: true },
     status: { type: Number, required: true },
-    extra: { type: String, required: true }
+    extra: { type: String }
   },
   {
     collection: 'TrainTripDetail'

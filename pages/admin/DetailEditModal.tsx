@@ -1,7 +1,7 @@
 import { message, Modal, Form, Input, DatePicker, TimePicker, Radio } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import moment, { Moment } from 'moment'
-import { ObjectId } from 'mongoose'
+import mongoose, { mongo } from 'mongoose'
 import { forwardRef, useState, useImperativeHandle } from 'react'
 import { useQueryClient } from 'react-query'
 import { ITrainTripDetail } from '../../models/TrainTripDetail'
@@ -18,17 +18,44 @@ const adapter = (record: ITrainTripDetail) => {
   }
 }
 
+const updateTrainTripDetail = async (newValue: ITrainTripDetail) => {
+  const { timestamp, trainTripId, extra, status } = newValue
+  return await fetch('/api/trainTripDetail', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      timestamp,
+      trainTripId,
+      extra,
+      status
+    })
+  }).then((resp) => resp.json())
+}
+
 const DetailEditModal = forwardRef<IDetailEditModalRef>(function EditingModal(props, ref) {
   const [visible, setVisible] = useState(false)
-  //   const [recordId, setRecordId] = useState<string | undefined>()
-  //   const [type, setType] = useState<'修改' | '新增'>()
   const [ttid, setTtid] = useState<string>('')
   const [confirmLoading, setConfirmLoading] = useState(false)
   const queryClient = useQueryClient()
 
   const [form] = useForm<ITrainTripDetail>()
 
-  const handleOk = () => {}
+  const handleOk = async () => {
+    setConfirmLoading(true)
+    const newValue = form.getFieldsValue()
+    const resp = await updateTrainTripDetail(newValue)
+    if (resp.success) {
+      await queryClient.invalidateQueries('/api/trainTrip')
+      message.success('成功修改')
+      setConfirmLoading(false)
+      setVisible(false)
+    } else {
+      message.error('出错了')
+      setConfirmLoading(false)
+    }
+  }
 
   const handleCancel = () => {
     setVisible(false)
@@ -106,50 +133,6 @@ const DetailEditModal = forwardRef<IDetailEditModalRef>(function EditingModal(pr
             <Radio.Button value={2}>休</Radio.Button>
           </Radio.Group>
         </Form.Item>
-
-        {/* <Form.Item
-          label={g['OrderDate']}
-          name="OrderDate"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <DatePicker />
-        </Form.Item>
-
-        <Form.Item
-          label={g['OrderId']}
-          name="OrderId"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['DepartureStation']}
-          name="DepartureStation"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['ArriveStation']}
-          name="ArriveStation"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['DepartureTime']}
-          name="DepartureTime"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <TimePicker />
-        </Form.Item>
-        <Form.Item
-          label={g['ArriveTime']}
-          name="ArriveTime"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <TimePicker />
-        </Form.Item> */}
       </Form>
     </Modal>
   )

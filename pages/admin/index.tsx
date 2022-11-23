@@ -1,16 +1,16 @@
-import { Button, DatePicker, Modal, Space, Typography } from 'antd'
+import { Button, Col, DatePicker, Modal, Row, Space, Typography } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import moment, { Moment } from 'moment'
 import { useMemo, useRef, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { ITrainTrip, ITrainTripRes } from '../api/trainTrip'
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import EditingModal, { IEditingModalRef } from './EditingModal'
 import { g } from '../../utils/dataMap'
 import Status from './Status'
 import DetailEditModal, { IDetailEditModalRef } from './DetailEditModal'
 import { ITrainTripDetailRes } from '../api/trainTripDetail'
-
+import { grey } from '@ant-design/colors'
 const { RangePicker } = DatePicker
 
 type Params = {
@@ -147,7 +147,18 @@ const AdminPage = ({}: {}) => {
   return (
     <>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Typography.Title>动车组列车开行情况</Typography.Title>
+        <Row style={{ justifyContent: 'space-between', marginBottom: '20px' }}>
+          <Col>
+            <span style={{ lineHeight: '32px', fontSize: '30px' }}>动车组列车开行情况</span>
+            <span style={{ color: grey.primary }}>({query.data?.data?.length})</span>
+          </Col>
+          <Col>
+            <Button type="primary" style={{ width: 270 }} icon={<PlusOutlined />}>
+              增加一条动车组
+            </Button>
+          </Col>
+        </Row>
+
         <RangePicker
           value={range}
           onChange={(dates, dayStrings) => {

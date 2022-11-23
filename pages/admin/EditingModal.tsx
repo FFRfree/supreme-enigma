@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Modal, TimePicker, message } from 'antd'
+import { DatePicker, Form, Input, Modal, TimePicker, message, Button } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import moment from 'moment'
 import { useMemo, useState } from 'react'
@@ -8,7 +8,7 @@ import { ITrainTripMeta } from '../../models/TrainTripMeta'
 import { g } from '../../utils/dataMap'
 import { ITrainTrip } from '../api/trainTrip'
 
-const adapter = (record: ITrainTrip): Partial<ITrainTrip> => {
+const adapter = (record: ITrainTripMeta): ITrainTripMeta => {
   /**为保证date不是字符串而是Date */
   const { name, OrderDate, OrderId, DepartureStation, ArriveStation, DepartureTime, ArriveTime } =
     record
@@ -36,6 +36,16 @@ const updateTrainTripMeta = async (id: string, updates: ITrainTripMeta) => {
   }).then((resp) => resp.json())
 }
 
+const deleteTrainTrip = async (trainTripId: string) => {
+  return await fetch('/api/trainTrip', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ trainTripId })
+  }).then((resp) => resp.json())
+}
+
 const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, ref) {
   const [visible, setVisible] = useState(false)
   const [recordId, setRecordId] = useState<string>('')
@@ -57,6 +67,7 @@ const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, r
         })
       } else {
         message.error('出错了')
+        console.error(resp.err)
         setConfirmLoading(false)
       }
     })
@@ -66,11 +77,28 @@ const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, r
     setVisible(false)
   }
 
+  const handleDelete = async () => {
+    // TODO: 二次提示
+    setConfirmLoading(true)
+    const { success, meta, detail, err } = await deleteTrainTrip(recordId)
+    console.log(success, meta, detail)
+    if (success) {
+      await queryClient.invalidateQueries('/api/trainTrip')
+      message.success(
+        `成功删除【${meta.name}】交路和对应的【${detail.deletedCount || 0}条排班信息】`
+      )
+      setVisible(false)
+    } else {
+      message.error('出错了')
+      console.error(err)
+    }
+    setConfirmLoading(false)
+  }
+
   useImperativeHandle(
     ref,
     () => {
       return {
-        // ... your methods ...
         open(record) {
           setRecordId(record._id)
           form.setFieldsValue(adapter(record))
@@ -87,6 +115,20 @@ const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, r
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={confirmLoading}
+      footer={
+        <div style={{ display: 'flex' }}>
+          <Button onClick={handleDelete} disabled={confirmLoading} danger>
+            删除
+          </Button>
+          <div style={{ flexGrow: 1 }}></div>
+          <Button onClick={handleCancel} disabled={confirmLoading}>
+            取消
+          </Button>
+          <Button type="primary" onClick={handleOk} disabled={confirmLoading}>
+            保存
+          </Button>
+        </div>
+      }
     >
       <Form
         form={form}
