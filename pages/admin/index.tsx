@@ -11,6 +11,7 @@ import Status from './Status'
 import DetailEditModal, { IDetailEditModalRef } from './DetailEditModal'
 import { ITrainTripDetailRes } from '../api/trainTripDetail'
 import { grey } from '@ant-design/colors'
+import PopulateTrainTripModal, { PopulateTrainTripModalRef } from './PopulateTrainTripModal'
 const { RangePicker } = DatePicker
 
 type Params = {
@@ -32,6 +33,7 @@ const AdminPage = ({}: {}) => {
   const isoRange = useMemo(() => range.map((m) => m.toISOString()), [range])
   // FIXME: 为什么文档写着dayjs，类型提示moment
 
+  const populateModalRef = useRef<PopulateTrainTripModalRef | null>(null)
   const editModalRef = useRef<IEditingModalRef | null>(null)
   const detailEditModalRef = useRef<IDetailEditModalRef | null>(null)
 
@@ -153,7 +155,12 @@ const AdminPage = ({}: {}) => {
             <span style={{ color: grey.primary }}>({query.data?.data?.length})</span>
           </Col>
           <Col>
-            <Button type="primary" style={{ width: 270 }} icon={<PlusOutlined />}>
+            <Button
+              type="primary"
+              style={{ width: 270 }}
+              icon={<PlusOutlined />}
+              onClick={() => populateModalRef.current?.open()}
+            >
               增加一条动车组
             </Button>
           </Col>
@@ -176,6 +183,7 @@ const AdminPage = ({}: {}) => {
           loading={query.isLoading}
         />
       </Space>
+      <PopulateTrainTripModal ref={populateModalRef} />
       <EditingModal ref={editModalRef}></EditingModal>
       <DetailEditModal ref={detailEditModalRef}></DetailEditModal>
     </>

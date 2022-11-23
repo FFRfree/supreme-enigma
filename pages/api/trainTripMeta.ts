@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const document = req.body
         const newRecord = new TrainTripMeta(document)
         const ans = await newRecord.save()
+        // TrainTripMeta.insertMany([document])
         res.status(201).json({ success: true, data: ans })
         break
       }

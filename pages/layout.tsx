@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ScheduleOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined
@@ -42,7 +43,7 @@ const MyLayout: React.FC<IMylayout> = ({ children }: IMylayout) => {
               key: '/admin',
               icon: (
                 <Link href="/admin">
-                  <VideoCameraOutlined />
+                  <ScheduleOutlined />
                 </Link>
               ),
               label: 'schedule'

@@ -7,7 +7,6 @@ function Status({ ttDetail }: { ttDetail: ITrainTripDetail | null }) {
     return <Tag color="default">空</Tag>
   }
   /** TODO： 这里以后是枚举值，有三种状态 */
-  console.log(ttDetail.status)
   const config = enumMap[Math.floor(ttDetail.status) as 0 | 1 | 2]
   return (
     <Tooltip title={<ExtraInfoDisplay obj={ttDetail} />}>

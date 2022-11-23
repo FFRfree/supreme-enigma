@@ -140,61 +140,67 @@ const EditingModal = forwardRef<IEditingModalRef>(function EditingModal(props, r
         //   onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item
-          label={g['name']}
-          name="name"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={g['OrderDate']}
-          name="OrderDate"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <DatePicker />
-        </Form.Item>
-
-        <Form.Item
-          label={g['OrderId']}
-          name="OrderId"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['DepartureStation']}
-          name="DepartureStation"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['ArriveStation']}
-          name="ArriveStation"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={g['DepartureTime']}
-          name="DepartureTime"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <TimePicker />
-        </Form.Item>
-        <Form.Item
-          label={g['ArriveTime']}
-          name="ArriveTime"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <TimePicker />
-        </Form.Item>
+        <TrainTripMetaFormItems></TrainTripMetaFormItems>
       </Form>
     </Modal>
   )
 })
+
+export const TrainTripMetaFormItems = () => {
+  return (
+    <>
+      <Form.Item
+        label={g['name']}
+        name="name"
+        rules={[{ required: true, message: 'Please input your username!' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={g['OrderDate']}
+        name="OrderDate"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <DatePicker />
+      </Form.Item>
+      <Form.Item
+        label={g['OrderId']}
+        name="OrderId"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={g['DepartureStation']}
+        name="DepartureStation"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={g['ArriveStation']}
+        name="ArriveStation"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={g['DepartureTime']}
+        name="DepartureTime"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <TimePicker />
+      </Form.Item>
+      <Form.Item
+        label={g['ArriveTime']}
+        name="ArriveTime"
+        rules={[{ required: true, message: '请输入' }]}
+      >
+        <TimePicker />
+      </Form.Item>
+    </>
+  )
+}
 export interface IEditingModalRef {
   open: (record: ITrainTrip) => void
 }

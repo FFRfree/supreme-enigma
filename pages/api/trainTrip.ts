@@ -38,12 +38,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         console.log(start, end)
         // console.log(JSON.stringify(matchConditions))
         const data = await TrainTrip.aggregate<ITrainTrip>([
-          {
-            $sort: {
-              OrderDate: 1,
-              name: 1
-            }
-          },
+          // {
+          //   $sort: {
+          //     OrderDate: 1,
+          //     name: 1
+          //   }
+          // },
           {
             $lookup: {
               from: 'TrainTripDetail',
