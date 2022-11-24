@@ -24,6 +24,16 @@ a {
     background: black;
   }
 }
+
+#nprogress .spinner-icon {
+  width: 24px;
+  height: 24px;
+}
+
+#nprogress .bar {
+  height: 4px
+}
+
 @import '~nprogress/nprogress.css';
 
 @import '~antd/dist/antd.dark.css';
