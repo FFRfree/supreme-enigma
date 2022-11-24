@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Modal, Row, Space, Typography } from 'antd'
+import { Button, Col, DatePicker, Modal, Row, Space, Tabs, Typography } from 'antd'
 import Table, { ColumnsType } from 'antd/lib/table'
 import moment, { Moment } from 'moment'
 import { useMemo, useRef, useState } from 'react'
@@ -176,12 +176,22 @@ const AdminPage = ({}: {}) => {
           }}
           allowClear={false}
         />
-        <Table
-          dataSource={dataSource}
-          columns={[...basicColumns, ...perDayColumns] as any}
-          rowKey={'_id'}
-          loading={query.isLoading}
-        />
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab="标动" key="1">
+            <Table
+              dataSource={dataSource}
+              columns={[...basicColumns, ...perDayColumns] as any}
+              rowKey={'_id'}
+              loading={query.isLoading}
+            />
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="北线" key="2">
+            建设中
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="南高" key="3">
+            建设中
+          </Tabs.TabPane>
+        </Tabs>
       </Space>
       <PopulateTrainTripModal ref={populateModalRef} />
       <EditingModal ref={editModalRef}></EditingModal>

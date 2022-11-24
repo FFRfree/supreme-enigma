@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "set MONGODB_URI=mongodb://localhost:27017/my_db && ts-node scripts\\seed.ts"
+    "seed": "ts-node scripts/seed.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",

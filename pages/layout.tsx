@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  AreaChartOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ScheduleOutlined,
@@ -47,6 +48,15 @@ const MyLayout: React.FC<IMylayout> = ({ children }: IMylayout) => {
                 </Link>
               ),
               label: 'schedule'
+            },
+            {
+              key: '/graph',
+              icon: (
+                <Link href="/graph">
+                  <AreaChartOutlined />
+                </Link>
+              ),
+              label: 'graph'
             },
             {
               key: '/testPage',
